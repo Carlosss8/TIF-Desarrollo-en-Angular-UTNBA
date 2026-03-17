@@ -1,0 +1,27 @@
+.container {
+    height: 100vh;
+}
+
+/* Panel izquierdo */
+.sidenav {
+    width: 350px;
+    background-color: #1e1e2f;
+    color: white;
+    padding: 15px;
+}
+
+.title {
+    text-align: center;
+}
+
+/* Contenido derecho */
+.content {
+    padding: 20px;
+    background-color: #f5f5f5;
+}
+
+.content-box {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+}
