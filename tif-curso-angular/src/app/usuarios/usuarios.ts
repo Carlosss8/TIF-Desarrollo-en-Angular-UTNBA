@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from "@angular/forms"
+import { User } from '../services/user';
 
-interface Usuario {
+export interface Usuario {
   nombre: string,
   email: string,
   numeroCel: string,
@@ -13,7 +14,7 @@ interface Usuario {
 @Component({
   selector: 'app-usuarios',
   standalone: true,
-  imports: [],
+  imports: [ReactiveFormsModule],
   templateUrl: './usuarios.html',
   styleUrl: './usuarios.css',
 })
@@ -21,13 +22,13 @@ export class Usuarios implements OnInit {
   form!: FormGroup
   usuarios: Usuario[] = []
 
-  constructor(private fb: FormBuilder) { }
+  constructor(private fb: FormBuilder, private usuariosService: User) { }
 
   ngOnInit(): void {
     this.form = this.fb.group({
       nombre: ['', [Validators.required, Validators.minLength(3)]],
       email: ['', [Validators.required, Validators.email]],
-      numeroCel: ['', [Validators.required, Validators.minLength(11)]],
+      numeroCel: ['', [Validators.required, Validators.minLength(10)]],
       password: ['', [Validators.required, Validators.minLength(4)]],
       estado: ['']
     });
@@ -50,9 +51,8 @@ export class Usuarios implements OnInit {
       ultimoConexion: new Date().toISOString()
     };
 
-    this.usuarios.push(nuevoUsuario);
-    localStorage.setItem('usuarios', JSON.stringify(this.usuarios));
-
+    this.usuariosService.agregarUsuario(nuevoUsuario);
+    this.usuarios = this.usuariosService.obtenerUsuarios();
     this.form.reset();
   }
 

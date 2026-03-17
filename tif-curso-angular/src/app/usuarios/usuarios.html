@@ -1,1 +1,27 @@
-<p>usuarios works!</p>
+<h2>Registro de usuarios</h2>
+
+<form [formGroup]="form" (ngSubmit)="guardarUsuario()">
+    <div>
+        <label>Nombre</label>
+        <input type="text" formControlName="nombre">
+    </div>
+
+    <div>
+        <label>Email</label>
+        <input type="email" formControlName="email">
+    </div>
+
+    <div>
+        <label>Número celular</label>
+        <input type="text" formControlName="numeroCel">
+    </div>
+
+    <div>
+        <label>Password</label>
+        <input type="password" formControlName="password">
+    </div>
+
+    <button type="submit">Guardar usuario</button>
+</form>
+
+<hr>
