@@ -2,14 +2,13 @@
 
     <mat-sidenav mode="side" opened class="sidenav">
         <h2 class="title">LISTA DE CHATS</h2>
-
-        <h2>ACA SON LOS CHAT DINAMICOS</h2>
         <div>
             <input type="search" id="mySearch" name="q" />
             <button>Buscar</button>
         </div>
         @for (usuario of usuarios; track $index) {
-        <div class="content-box-chat">
+        <div class="content-box-chat" (click)="seleccionarUsuario(usuario)"
+            [class.activo]="usuarioSeleccionado?.email === usuario.email">
             <p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAKMAAACUCAMAAADIzWmnAAAAMFBMVEXk5ueutLfn6eqrsbTq7O2yt7ra3d7Jzc+orrG7wMLQ09W1u73d4OG/xMbh4+S4vcAv7hEpAAAESElEQVR4nO2c25arIAyGJchZ8P3fdqvU2mm1KiRg1/a/mrn7VkhCiEmb5tatW7du3bp162IC+PzrSgII0lrlRyllrQwX44S2s8YJxp9iwhnbtVfBhKZTQnP2Ia6FCs0FMAGkZyuAD0zmZXVI6Mw2YaQ0dSkh+LVDfpP2XT1KsGKfcLSlsNUgzSHCST7UoAR5zIizKSt4JdjvsfIByYpDgj1FOFEWdkpQpxFLQyZYcVJByFREpov5JHRphKNKZfPgkhF5H8ow+sSTniB9CUMmO2OULhI3WYiMiY6cEHJOehT35Igyj3CElNSQfaYZBzlij5T5iIMhSSHb9NT4IkOJmJl3niL1SI+CSJrIO4HCyDgdYoN01JSVJBgcRMb6loqx0ViMZBciWDRGsoo8+6pexBUVI1JUj4yGqNYNeIxUDjm8+vFEVPzgMloaxpR3/yYjUdDghfV4ZZNk8XCilbcvR8OIUIK/iIYRpb6dxX+AUd+M/w0jjT82PSYjUVyj5kdBY0fUe8aQMP7CfY3KqInqHszaTBO1KvLbei+iehgivhUc0XumRWsB0DVzf+F93QQ8RrLuHqDdhoTtZqwMSdamGCSRIltTfpFD6uMawj4uUj+cqAEwQ2IgMtqPrygpknxmASNqiBERPJL+e2GTe2lz0q9cUV2uR9KbMbccp7xiFmX1pjj1h+GonNEZJgqc9ASZHtvlxrmSXVIXccYsyDLx8lRKz4KrkoRJkLrIiNSrTh934YNOgORlZrg+IE8MDVcZGZ4gjzulr7i2cMiUWpC+DXa1P2rPRYVgeYMMqufbmON6Sm3EiVJuUHLd2ysQTmobZVzcQopwg8ZFpIZuRCZB0zqX8qZ3QjhnvLreQtck2PznGoI11YZ6Ctq2bbpxby8u7j2khtMejrutuxo32il0gxOKZ7DM0c3nwOHM+MEz6yxFxhgxgusvyfER45r1Qwx1ZQ9/WnmcNh6/472CMuG8hDK5CAbf8/zANtxaSh9yuiQ/9jbY0f0SAGdOZpQkpZR5gJGSM2eJ0idIu7rVmsbpCTBhNCEOYKRkxqIeOTRblU0eJmZRJFGnFBYNBToOZbu3GZwjLmz+ZQmdx/tIuKbxsZNFCY2is+EsnrX6DBJ3VG8LkqW/yoKiPeZFuk9rERQyYlSiKbH2J47KnE1DEDCHog7pbEsIkOdaj0GeGrIASZ9x1nSiiwoYy29pkEe70agzWyd1cO4Hc4onAfLIQgjWel4y5L4lax70A3JvIARkzYN+QH6PbsAa4MnS94+KwdV1xoe+QSIulWVq8+6uHdKLtmcuUGdZ87QZNxXqiE2t75Gjjlbny61ZMWdKgkJr5QXO2CCeVrYkq9VjW/rcnIMrBUzUx7DpBe7pd70bEm9iGVN/888laol3/Z1juVhunCVePRJzsxpRf+ZELpd4ovjLzy+0l6nJ3sSXw8aZqCbQUuzWe/PvKZZo/wBMTD3mQvxXPQAAAABJRU5ErkJggg=="
                     alt="" class="foto-perfil"></p>
             <p>{{ usuario.nombre }}</p>
@@ -20,9 +19,36 @@
 
     <mat-sidenav-content class="content">
         <div class="content-box">
-            <h1>Conversacion</h1>
-            <p>Acá va todo la Conversacion</p>
+
+            @if (usuarioSeleccionado) {
+            <h1>{{ usuarioSeleccionado.nombre }}</h1>
+            <p><strong>Última conexión:</strong> {{ usuarioSeleccionado.ultimoConexion | date:'shortTime' }}</p>
+            } @else {
+            <h1>Conversación</h1>
+            <p>Seleccioná un usuario de la izquierda</p>
+            }
+
         </div>
+
+        <div class="mensajes-container">
+            @for (mensaje of conversacionActual.mensajes; track $index) {
+            <div class="mensaje-fila" [class.usuario]="mensaje.emisor === 'usuario'"
+                [class.app]="mensaje.emisor === 'app'">
+                <div class="mensaje-burbuja">
+                    <p class="mensaje-texto">{{ mensaje.texto }}</p>
+                    <span class="mensaje-hora">{{ mensaje.hora }}</span>
+                </div>
+            </div>
+            }
+        </div>
+
+        <div class="form-chat">
+            <form [formGroup]="form" (ngSubmit)="enviarMensaje()">
+                <input type="text" formControlName="mensaje" placeholder="Escribí un mensaje..." class="input-chat">
+                <button type="submit" class="btn-enviar">Enviar</button>
+            </form>
+        </div>
+        <hr>
     </mat-sidenav-content>
 
 </mat-sidenav-container>
