@@ -11,6 +11,17 @@ export interface Usuario {
   ultimoConexion: string,
 }
 
+export interface Mensaje {
+  texto: string,
+  emisor: string,
+  hora: string
+}
+
+export interface Conversacion {
+  numeroCel: string,
+  mensajes: Mensaje[]
+}
+
 @Component({
   selector: 'app-usuarios',
   standalone: true,
