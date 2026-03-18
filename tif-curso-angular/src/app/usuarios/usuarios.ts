@@ -1,21 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from "@angular/forms"
 import { User } from '../services/user';
+import { Usuario } from '../models/usuario';
+import { Mensaje } from '../models/mensaje';
 
-export interface Usuario {
-  nombre: string,
-  email: string,
-  numeroCel: string,
-  password: string,
-  estado: boolean,
-  ultimoConexion: string,
-}
-
-export interface Mensaje {
-  texto: string,
-  emisor: string,
-  hora: string
-}
 
 export interface Conversacion {
   numeroCel: string,

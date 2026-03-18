@@ -2,8 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatListModule } from '@angular/material/list';
-import { Conversacion, Mensaje, Usuarios } from '../usuarios/usuarios';
-import { Usuario } from '../usuarios/usuarios';
+import { Conversacion } from '../models/conversacion';
+import { Mensaje } from '../models/mensaje';
+import { Usuario } from '../models/usuario';
 import { User } from '../services/user';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from "@angular/forms"
@@ -77,7 +78,7 @@ export class PanelChat implements OnInit {
 
       setTimeout(() => {
         const respuestaApp: Mensaje = {
-          texto: 'Hola, recibí tu mensaje',
+          texto: 'Juan Carlos, vamos al tropi',
           emisor: 'app',
           hora: new Date().toLocaleTimeString()
         };
