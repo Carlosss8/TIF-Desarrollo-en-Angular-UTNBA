@@ -22,15 +22,29 @@ export class PanelChat implements OnInit {
   conversaciones: Conversacion[] = []
   conversacionActual!: Conversacion
   form!: FormGroup
+  usuariosSearch: Usuario[] = []
 
   constructor(private usuariosService: User, private fb: FormBuilder) { }
 
   ngOnInit(): void {
-    this.usuarios = this.usuariosService.obtenerUsuarios();
+    const lista = this.usuariosService.obtenerUsuarios();
+
+    this.usuariosSearch = lista;
+    this.usuarios = [...lista];
 
     this.form = this.fb.group({
       mensaje: ['', [Validators.required, Validators.minLength(1)]]
     })
+  }
+
+  buscarChat(texto: string) {
+
+    if (!texto) {
+      this.usuariosSearch = [...this.usuarios]
+    } else {
+      this.usuariosSearch = this.usuarios.filter(u => u.nombre.toLowerCase().includes(texto.toLowerCase()))
+    }
+
   }
 
   seleccionarUsuario(usuario: Usuario): void {
