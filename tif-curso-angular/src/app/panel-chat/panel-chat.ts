@@ -7,8 +7,8 @@ import { Mensaje } from '../models/mensaje';
 import { Usuario } from '../models/usuario';
 import { User } from '../services/user';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from "@angular/forms"
-
+import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { ChatServices } from '../services/chat-services';
 
 @Component({
   selector: 'app-panel-chat',
@@ -20,12 +20,11 @@ import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from "@angula
 export class PanelChat implements OnInit {
   usuarios: Usuario[] = []
   usuarioSeleccionado: Usuario | null = null;
-  conversaciones: Conversacion[] = []
-  conversacionActual!: Conversacion
+  conversacionActual: Conversacion | null = null
   form!: FormGroup
   usuariosSearch: Usuario[] = []
 
-  constructor(private usuariosService: User, private fb: FormBuilder) { }
+  constructor(private usuariosService: User, private fb: FormBuilder, private chatService: ChatServices,) { }
 
   ngOnInit(): void {
     const lista = this.usuariosService.obtenerUsuarios();
@@ -50,31 +49,26 @@ export class PanelChat implements OnInit {
 
   seleccionarUsuario(usuario: Usuario): void {
     this.usuarioSeleccionado = usuario;
-
-    const conversacionEncontrada = this.conversaciones.find(c => c.numeroCel === usuario.numeroCel)
-
-    if (conversacionEncontrada) {
-      this.conversacionActual = conversacionEncontrada
-    } else {
-      const nuevaConversacion: Conversacion = {
-        numeroCel: usuario.numeroCel,
-        mensajes: []
-      }
-      this.conversaciones.push(nuevaConversacion)
-      this.conversacionActual = nuevaConversacion
-    }
+    this.conversacionActual = this.chatService.obtenerOCrearConversacion(usuario.numeroCel);
   }
 
   enviarMensaje() {
-    if (this.form.valid) {
-      const texto = this.form.value.mensaje
+    if (this.form.valid && this.usuarioSeleccionado) {
+      const texto = this.form.value.mensaje.trim();
+
+      if (!texto) return;
+
       const nuevoMensaje: Mensaje = {
         texto: texto,
         emisor: 'usuario',
         hora: new Date().toLocaleTimeString()
-      }
-      this.conversacionActual.mensajes.push(nuevoMensaje)
-      this.form.reset()
+      };
+
+      this.chatService.agregarMensaje(this.usuarioSeleccionado.numeroCel, nuevoMensaje);
+      this.conversacionActual = this.chatService.obtenerOCrearConversacion(this.usuarioSeleccionado.numeroCel);
+      this.form.reset();
+
+      const numeroCel = this.usuarioSeleccionado.numeroCel;
 
       setTimeout(() => {
         const respuestaApp: Mensaje = {
@@ -83,10 +77,13 @@ export class PanelChat implements OnInit {
           hora: new Date().toLocaleTimeString()
         };
 
-        this.conversacionActual.mensajes.push(respuestaApp);
+        this.chatService.agregarMensaje(numeroCel, respuestaApp);
+
+        if (this.usuarioSeleccionado?.numeroCel === numeroCel) {
+          this.conversacionActual = this.chatService.obtenerOCrearConversacion(numeroCel);
+        }
       }, 1000);
     }
-
   }
 
 

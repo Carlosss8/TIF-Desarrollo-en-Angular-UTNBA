@@ -18,16 +18,15 @@
     </mat-sidenav>
 
     <mat-sidenav-content class="content">
+
+        @if (usuarioSeleccionado && conversacionActual) {
+
         <div class="content-box">
-
-            @if (usuarioSeleccionado) {
             <h1>{{ usuarioSeleccionado.nombre }}</h1>
-            <p><strong>Última conexión:</strong> {{ usuarioSeleccionado.ultimoConexion | date:'shortTime' }}</p>
-            } @else {
-            <h1>Conversación</h1>
-            <p>Seleccioná un usuario de la izquierda</p>
-            }
-
+            <p>
+                <strong>Última conexión:</strong>
+                {{ usuarioSeleccionado.ultimoConexion | date:'shortTime' }}
+            </p>
         </div>
 
         <div class="mensajes-container">
@@ -44,11 +43,19 @@
 
         <div class="form-chat">
             <form [formGroup]="form" (ngSubmit)="enviarMensaje()">
-                <input type="text" formControlName="mensaje" placeholder="Escribí un mensaje..." class="input-chat">
+                <input type="text" formControlName="mensaje" placeholder="Escribí un mensaje..." class="input-chat" />
                 <button type="submit" class="btn-enviar">Enviar</button>
             </form>
         </div>
-        <hr>
+
+        } @else {
+        <div class="chat-vacio">
+            <h2>Bienvenido al chat</h2>
+            <p>Seleccioná un contacto de la izquierda para comenzar una conversación.</p>
+        </div>
+
+        }
+
     </mat-sidenav-content>
 
 </mat-sidenav-container>
