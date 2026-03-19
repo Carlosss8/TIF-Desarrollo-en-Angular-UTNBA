@@ -2,13 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from "@angular/forms"
 import { User } from '../services/user';
 import { Usuario } from '../models/usuario';
-import { Mensaje } from '../models/mensaje';
-
-
-export interface Conversacion {
-  numeroCel: string,
-  mensajes: Mensaje[]
-}
 
 @Component({
   selector: 'app-usuarios',
