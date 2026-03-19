@@ -1,0 +1,13 @@
+<div mat-dialog-content>
+    <form [formGroup]="form" class="modal-form">
+        <input type="text" formControlName="nombre" placeholder="Nombre" />
+        <input type="email" formControlName="email" placeholder="Email" />
+        <input type="text" formControlName="numeroCel" placeholder="Número celular" />
+        <input type="password" formControlName="password" placeholder="Contraseña" />
+    </form>
+</div>
+
+<div mat-dialog-actions class="acciones">
+    <button type="button" class="btn-cancelar" (click)="cerrar()">Cancelar</button>
+    <button type="button" class="btn-guardar" (click)="guardar()">Guardar</button>
+</div>
