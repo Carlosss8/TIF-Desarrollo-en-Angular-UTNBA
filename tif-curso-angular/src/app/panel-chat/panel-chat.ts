@@ -9,11 +9,13 @@ import { User } from '../services/user';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ChatServices } from '../services/chat-services';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { NuevoChatModal } from '../nuevo-chat-modal/nuevo-chat-modal';
 
 @Component({
   selector: 'app-panel-chat',
   standalone: true,
-  imports: [MatSidenavModule, MatToolbarModule, MatListModule, CommonModule, ReactiveFormsModule],
+  imports: [MatSidenavModule, MatToolbarModule, MatListModule, CommonModule, ReactiveFormsModule, MatDialogModule],
   templateUrl: './panel-chat.html',
   styleUrl: './panel-chat.css'
 })
@@ -24,7 +26,7 @@ export class PanelChat implements OnInit {
   form!: FormGroup
   usuariosSearch: Usuario[] = []
 
-  constructor(private usuariosService: User, private fb: FormBuilder, private chatService: ChatServices,) { }
+  constructor(private usuariosService: User, private fb: FormBuilder, private chatService: ChatServices, private dialog: MatDialog) { }
 
   ngOnInit(): void {
     const lista = this.usuariosService.obtenerUsuarios();
@@ -84,6 +86,22 @@ export class PanelChat implements OnInit {
         }
       }, 1000);
     }
+  }
+
+  abrirModalNuevoChat(): void {
+    const dialogRef = this.dialog.open(NuevoChatModal, {
+      width: '420px'
+    });
+
+    dialogRef.afterClosed().subscribe(resultado => {
+      if (resultado) {
+        this.usuariosService.agregarUsuario(resultado);
+
+        const lista = this.usuariosService.obtenerUsuarios();
+        this.usuarios = [...lista];
+        this.usuariosSearch = [...lista];
+      }
+    });
   }
 
 
