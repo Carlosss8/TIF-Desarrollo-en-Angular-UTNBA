@@ -74,7 +74,7 @@ export class PanelChat implements OnInit {
 
       setTimeout(() => {
         const respuestaApp: Mensaje = {
-          texto: 'Juan Carlos, vamos al tropi',
+          texto: 'Hola como estas, ¡recibi tu mensaje!',
           emisor: 'app',
           hora: new Date().toLocaleTimeString()
         };
@@ -100,6 +100,14 @@ export class PanelChat implements OnInit {
         const lista = this.usuariosService.obtenerUsuarios();
         this.usuarios = [...lista];
         this.usuariosSearch = [...lista];
+
+        const usuarioNuevo = lista.find(
+          u => u.numeroCel === resultado.numeroCel
+        );
+
+        if (usuarioNuevo) {
+          this.seleccionarUsuario(usuarioNuevo);
+        }
       }
     });
   }

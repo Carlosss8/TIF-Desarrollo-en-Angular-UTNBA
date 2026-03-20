@@ -287,9 +287,26 @@ hr {
     max-width: 400px;
 }
 
+.chat-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.nombre-chat {
+    margin: 0;
+    font-weight: bold;
+    color: white;
+}
+
+.estado-chat {
+    margin: 2px 0 0;
+    font-size: 13px;
+}
+
 .online {
     color: #25d366;
-    font-weight: bold;
+    font-weight: 600;
 }
 
 .offline {
