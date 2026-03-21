@@ -108,13 +108,3 @@ src/
 
 ## AUTOR
 NOMBRE: Carlos Rodriguez UNIDAD: Modulo 1 - Unidad 2
-
-## Fuentes
-
-- Medium: https://mwiza.medium.com/how-to-find-invalid-form-controls-in-angular-782ba7bbe9d2
-
-- Angular: https://angular.dev/guide/forms/reactive-forms
-
-- Preguntas y dudas con ChatGPT
-
-## Ejercicios y PostData
