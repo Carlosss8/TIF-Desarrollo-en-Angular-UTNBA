@@ -21,6 +21,7 @@
                     <span class="online">En línea</span>
                     } @else {
                     <span class="offline">
+                        <p style="color: red;">Offline</p>
                         Última vez: {{ usuario.ultimoConexion | date:'shortTime' }}
                     </span>
                     }
