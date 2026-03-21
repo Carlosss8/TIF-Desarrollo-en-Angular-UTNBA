@@ -97,11 +97,12 @@ export class PanelChat implements OnInit {
       if (resultado) {
         this.usuariosService.agregarUsuario(resultado);
 
-        const lista = this.usuariosService.obtenerUsuarios();
-        this.usuarios = [...lista];
-        this.usuariosSearch = [...lista];
+        const listaActualizada = this.usuariosService.obtenerUsuarios();
 
-        const usuarioNuevo = lista.find(
+        this.usuarios = [...listaActualizada];
+        this.usuariosSearch = [...listaActualizada];
+
+        const usuarioNuevo = this.usuarios.find(
           u => u.numeroCel === resultado.numeroCel
         );
 
